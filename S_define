@@ -1,0 +1,34 @@
+/************************TRICK HEADER*************************
+PURPOSE:
+    (S_define file for sim_skydiver)
+LIBRARY DEPENDENCIES:
+    (
+      (skydiver/src/skydiver_init.c)
+      (skydiver/src/skydiver_numeric.c)
+      (skydiver/src/skydiver_shutdown.c)
+    )
+*************************************************************/
+
+#include "sim_objects/default_trick_sys.sm"
+##include "skydiver/include/skydiver_numeric.h"
+
+class SkydiverSimObject : public Trick::SimObject {
+
+    public:
+        SKYDIVER skydiver;
+
+        SkydiverSimObject() {
+            ("default_data") skydiver_default_data( &skydiver ) ;
+            ("initialization") skydiver_init( &skydiver ) ;
+            ("derivative") skydiver_update( &skydiver ) ;
+            ("integration") trick_ret= skydiver_integ( &skydiver ) ;
+            ("shutdown") skydiver_shutdown( &skydiver ) ;
+        }
+} ;
+
+SkydiverSimObject dyn ;
+
+IntegLoop dyn_integloop (0.01) dyn ;
+void create_connections() {
+    dyn_integloop.getIntegrator(Runge_Kutta_4, 4);
+}

@@ -1,0 +1,22 @@
+# Build directories
+build/
+DP_Product/
+
+# Executables
+*.exe
+
+# System files
+.DS_Store
+
+# Trick files
+*.pyc
+
+# Generated files
+.trick/
+
+# Dependencies
+trick.zip
+
+# Runtime and log files
+RUN_test/*
+!RUN_test/input.py
